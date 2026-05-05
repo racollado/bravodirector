@@ -4,7 +4,7 @@
 
 A lot of this code is AI-generated. And by a lot, I mean pretty much all of it. Am I proud of this fact? Not particularly. However, does it work? For the most part, I think.
 
-I like to consider this repository a supplementary digital artifact of the show that further showcases the bittersweet irony of instant AI gratification. Not all of this code makes sense for its intended goal. In fact, I found myself finding ways to work around the janky AI output in producing this show.
+I like to consider this repository a supplementary digital artifact of the show that further showcases the bittersweet irony of instant AI gratification. Not all of this code makes sense for its intended goal. In fact, in producing this show, I found myself finding ways to work around the janky AI output instead of making it right.
 
 However, the fact of the matter is, this show - which ultimately made people pretty happy - wouldn't have existed by its performance date had it not been for Claude. And, to me, there's something deeply horrifying about that fact. Thanks, Claude... I guess?
 
