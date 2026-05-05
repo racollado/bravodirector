@@ -10,7 +10,7 @@ However, the fact of the matter is, this show - which ultimately made people pre
 
 The rest of this README is also AI-generated. I highly doubt anyone really cares to deeply understand this project's architecture, let alone clone and run the code, but if you do, some of it is definitely wrong and I'm sorry. But actually I'm not sorry because I didn't write it! Enjoy.
 
-P.S. - Watch the show recording here: https://www.youtube.com/watch?v=qoAK9d_af1E
+P.S. Watch the show recording here: https://www.youtube.com/watch?v=qoAK9d_af1E
 
 -------------------------------
 
