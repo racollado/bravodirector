@@ -1,4 +1,4 @@
-# Bravo, Director v2.0
+# Bravo, Director
 
 A real-time AI-powered performance orchestration system for experimental theater. A single Python process runs the show engine and serves a web-based performer view and script editor.
 
