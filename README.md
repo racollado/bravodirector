@@ -12,7 +12,7 @@ The rest of this README is also AI-generated. I highly doubt anyone really cares
 
 P.S. Watch the show recording here: https://www.youtube.com/watch?v=qoAK9d_af1E
 
-P.P.S. I made this flow chart without using AI(!) showing a less-detailed technical flow of this project:
+P.P.S. I made this (non-AI) flow chart showing a less-detailed technical flow of this project:
 
 <img width="8192" height="4573" alt="flowtb" src="https://github.com/user-attachments/assets/eb3f909b-bb3a-4632-837e-189501c9aae4" />
 
