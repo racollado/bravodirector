@@ -1,14 +1,19 @@
 # Bravo, Director
 
-A real-time AI-powered performance orchestration system for experimental theater. A single Python process runs the show engine and serves a web-based performer view and script editor.
+**Bravo, Director v2.0** — a real-time AI-assisted performance orchestration system for experimental theater. One Python process runs the show engine (FastAPI + uvicorn) and serves the built React app for the performer view and script editor.
 
-## Quick Start
+## Requirements
+
+- **Python** 3.10+ (recommended: current 3.12.x)
+- **Node.js** 18+ and npm (to build the web UI)
+
+## Quick start
 
 ### 1. Install Python dependencies
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -16,10 +21,12 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env: API keys and ports (see Environment variables below)
 ```
 
 ### 3. Build the web frontend
+
+The server serves static files from `web/dist`. Build before running (or use `npm run dev` during UI work — see Development).
 
 ```bash
 cd web
@@ -32,17 +39,39 @@ cd ..
 
 ```bash
 python main.py
-# Open http://127.0.0.1:9000 for the performer view
-# Open http://127.0.0.1:9000/editor for the script editor
 ```
+
+Open the app at **`http://127.0.0.1:8000`** (or whatever you set in `SERVER_PORT`). Default OSC to TouchDesigner is on **port 9000** (`TD_OSC_PORT`) — it is independent of the HTTP port.
+
+- **Performer view:** `http://127.0.0.1:8000/`
+- **Script editor:** `http://127.0.0.1:8000/editor`
 
 ### CLI options
 
+| Option | Description |
+|--------|-------------|
+| `--script PATH` | Show script JSON (default: `./scripts/uploaded_show.json`) |
+| `--port N` | HTTP server port (overrides `SERVER_PORT` in `.env`) |
+| `--debug` | Verbose logging to console and `logs/performance.log` |
+
+Example:
+
+```bash
+python main.py --script ./scripts/my_show.json --port 3000 --debug
 ```
-python main.py --script ./scripts/my_show.json   # Custom script
-python main.py --port 3000                        # Custom port
-python main.py --debug                            # Verbose logging
-```
+
+## Environment variables
+
+Defined in `.env` (see `.env.example`). If optional keys are missing, related features are disabled with a startup warning.
+
+| Variable | Purpose |
+|----------|---------|
+| `GEMINI_API_KEY` | Text generation (Gemini) |
+| `REPLICATE_API_TOKEN` | Music, TTS, image, video via Replicate |
+| `ASSEMBLYAI_API_KEY` | Live speech transcription and cue matching |
+| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `DYNAMODB_TABLE_NAME` | Audience submissions in DynamoDB |
+| `TD_OSC_HOST`, `TD_OSC_PORT` | OSC destination for TouchDesigner (default host `127.0.0.1`, port `9000`) |
+| `SERVER_HOST`, `SERVER_PORT` | HTTP bind address (default `127.0.0.1`:`8000`) |
 
 ## Architecture
 
@@ -54,157 +83,164 @@ python main.py --debug                            # Verbose logging
            │                                  │
            ▼                                  ▼
 ┌─────────────────────┐            ┌────────────────────┐
-│   ShowController     │◄─── WS ──►│  Web UI (React)    │
-│   - state machine    │           │  - Performer View  │
-│   - step execution   │           │  - Script Editor   │
-│   - action dispatch  │           └────────────────────┘
+│   ShowController    │◄─── WS ──►│  Web UI (React)   │
+│   · state machine    │           │  · Performer view │
+│   · step execution   │           │  · Script editor  │
+│   · action dispatch  │           └────────────────────┘
 └──┬────┬────┬────┬────┘
    │    │    │    │
    ▼    ▼    ▼    ▼
- Speech  Cue   Audio  OSC → TouchDesigner
- Monitor Det.  Engine  Client  (visuals)
+Speech  Cue   Audio  OSC → TouchDesigner
+Monitor Det.  Engine  Client  (visuals)
    │    │
    ▼    ▼
 ┌──────────────────────────────────────────┐
-│           Action Handlers                 │
-│  Gemini  │ Replicate │ Caption │ Timer   │
-│  (text)  │ (music,   │ (OSC)  │ (count) │
-│          │ TTS, video)│       │         │
-│          │            │ DynamoDB (submissions)│
+│           Action handlers                 │
+│  Gemini │ Replicate │ Caption │ Timer    │
+│  (text) │ (media)     │ (OSC)   │ (OSC)    │
+│         │             │ DynamoDB (submissions) │
 └──────────────────────────────────────────┘
 ```
 
-## Project Structure
+## Project structure
 
 ```
-BravoDirectorFinal/
-├── main.py                 # Entry point (FastAPI server)
+./
+├── main.py                 # Entry point: wires engine + FastAPI + uvicorn
 ├── requirements.txt        # Python dependencies
 ├── .env.example            # Environment variable template
-├── scripts/
-│   └── example_show.json   # Example show script
-├── engine/                 # Python show engine
-│   ├── show_controller.py  # Central orchestration + state machine
-│   ├── script_manager.py   # JSON script loading, injection, navigation
+├── scripts/                # Show scripts (JSON)
+│   └── uploaded_show.json  # Default script path for main.py
+├── engine/                 # Show engine
+│   ├── show_controller.py # Orchestration and state machine
+│   ├── script_manager.py   # Script load, steps, cue phrases
 │   ├── cue_detector.py     # Fuzzy speech cue matching
-│   ├── speech_monitor.py   # AssemblyAI real-time transcription
-│   ├── audio_engine.py     # Multi-layer audio (pygame)
-│   ├── osc_client.py       # OSC to TouchDesigner
-│   ├── task_manager.py     # Background task tracking
+│   ├── speech_monitor.py   # AssemblyAI streaming transcription
+│   ├── audio_engine.py     # Layered audio playback (pygame)
+│   ├── osc_client.py       # OSC client for TouchDesigner
+│   ├── task_manager.py     # Async task references ($task id)
 │   └── handlers/
-│       ├── gemini_handler.py     # Text generation
-│       ├── replicate_handler.py  # Music, TTS, video generation
-│       ├── caption_handler.py    # Caption display logic
-│       ├── timer_handler.py      # Countdown timers
-│       └── dynamodb_handler.py   # Audience submissions
-├── server/                 # FastAPI + WebSocket
-│   ├── app.py              # Routes and endpoints
-│   └── ws_manager.py       # WebSocket connection manager
-├── web/                    # React frontend
+│       ├── gemini_handler.py
+│       ├── replicate_handler.py
+│       ├── caption_handler.py
+│       ├── timer_handler.py
+│       └── dynamodb_handler.py
+├── server/
+│   ├── app.py              # Routes, WebSocket, static SPA
+│   └── ws_manager.py       # WebSocket broadcast + connections
+├── web/                    # React (Vite) frontend
 │   ├── src/
-│   │   ├── performer/      # Performer view components
-│   │   ├── editor/         # Script editor components
-│   │   └── api/            # WebSocket hook
-│   └── dist/               # Built frontend (served by FastAPI)
-├── assets/                 # Show assets
-│   ├── audio/
-│   ├── video/
-│   └── images/
-└── logs/                   # Performance logs
+│   │   ├── performer/      # Performer view
+│   │   ├── editor/         # Script editor
+│   │   └── api/            # `websocket.js` — live state + commands
+│   └── dist/               # Production build (gitignored; created by npm run build)
+├── assets/                 # Audio, video, images, text (see .gitignore for tracked paths)
+└── logs/                   # e.g. performance.log (created at runtime)
 ```
 
-## Script JSON Format
+## Script JSON format
 
-Shows are defined as JSON files with this structure:
+Shows are JSON documents shaped like:
 
 ```json
 {
   "title": "Show Title",
   "version": "2.0",
-  "settings": { ... },
+  "settings": { },
   "segments": [
     {
       "id": "segment_id",
       "name": "Segment Name",
-      "steps": [ ... ]
+      "steps": [ ]
     }
   ]
 }
 ```
 
-### Step structure
+### Step fields
 
-Each step has:
-- **`trigger`** — how the step starts (`speech`, `auto`, `timer`, `manual`, `audio_end`, `await_task`)
-- **`caption`** — audience-facing text with color and display mode
-- **`actions`** — array of things to execute (generate text, play audio, show QR, etc.)
-- **`overlays`** — persistent visual layers (images, videos)
-- **`performer`** — notes and section labels for the performer view
+- **`trigger`** — How the step is entered and whether it chains (see below).
+- **`caption`** — Audience-facing text, colors, display modes (`advance_on_cue`, `clear_then_voice`, etc.).
+- **`actions`** — Ordered list of action objects (`type` + parameters).
+- **`overlays`** — Images/videos layered with the step.
+- **`performer`** — Notes and labels for the performer UI.
+- **`mode`** — e.g. `timed_sequence` for synchronized multi-line playback (handled in `ShowController`).
 
-### Trigger types
+### Trigger behavior (runtime)
 
-| Type | Description |
-|------|-------------|
-| `speech` | Advance when cue phrase detected |
-| `auto` | Advance immediately after previous step |
-| `timer` | Advance after N seconds |
-| `manual` | Only via keyboard shortcut |
-| `audio_end` | When current audio finishes |
-| `await_task` | When a background task completes |
+| `trigger.type` | Role |
+|----------------|------|
+| `speech` | Step advances when the cue phrase matches the live transcript (`phrase`, `confidence`). |
+| `auto` | Runs when the show advances to this step. Can chain immediately to the next step unless gated (`wait_for_voice`, timed delays, etc.). |
+| `timer` | Waits `duration` seconds (silent, no on-screen countdown) before running the step’s actions. |
+
+Additional trigger fields include `delay`, `wait_for_voice`, and `phrase`/`confidence` for speech steps — see `engine/show_controller.py` and example steps in `scripts/uploaded_show.json`.
 
 ### Action types
 
+Implemented in `ShowController` (`engine/show_controller.py`):
+
 | Type | Description |
 |------|-------------|
-| `play_audio` | Play audio on a named layer (main/music/sfx) |
-| `play_video` | Play video via OSC to TouchDesigner |
-| `generate_text` | Generate text with Gemini, optionally inject into script |
-| `generate_music` | Generate music via Replicate |
-| `generate_tts` | Generate TTS voice with word timestamps |
-| `generate_video` | Generate video via Replicate |
-| `fetch_submissions` | Fetch audience words from DynamoDB |
-| `show_qr` / `hide_qr` | Toggle QR code display |
-| `start_timer` | Start countdown timer |
-| `audio_control` | Volume, speed, pitch, fade control |
-| `send_osc` | Send custom OSC message |
+| `play_audio` | Play audio on a named layer (`main` / `music` / `sfx`, etc.) |
+| `play_video` | Video via OSC to TouchDesigner |
+| `generate_text` | Gemini generation; can inject lines into the script |
+| `generate_music` | Music via Replicate |
+| `generate_sfx` | Sound effect generation via Replicate |
+| `generate_tts` | TTS with word-level timing |
+| `generate_video` | Video via Replicate |
+| `generate_image` | Image via Replicate |
+| `fetch_submissions` | Audience words from DynamoDB |
+| `show_qr` / `hide_qr` | QR display over OSC |
+| `start_timer` | Visible countdown synchronized with OSC |
+| `audio_control` | Volume, speed, pitch, fade |
+| `send_osc` | Custom OSC message |
 
-### Caption modes
+### Caption modes (caption handler)
 
 | Mode | Behavior |
 |------|----------|
-| `advance_on_cue` | Caption stays until next step replaces it |
-| `clear_then_voice` | Clear after delay, show next on voice onset |
+| `advance_on_cue` | Caption stays until the next step replaces it |
+| `clear_then_voice` | After a delay, clear; show next caption on voice onset |
 
-## Performer Keyboard Shortcuts
+## Performer keyboard shortcuts
+
+Ignored while focus is in an `INPUT` or `TEXTAREA`.
 
 | Key | Action |
 |-----|--------|
-| S | Start show |
-| P | Pause / Resume |
-| W | Skip (clean) |
-| Q | Skip + increment failure counter |
-| E | Go back to previous authored step |
+| S | Start show **from idle** (from step index 0) |
+| P | Pause / resume |
+| W | Skip step (clean) |
+| Q | Skip step and count a failure |
+| F | Add failure only (increment counter, optional SFX/OSC — no skip) |
+| E | Go back |
 | Shift+R | Reset show |
 
-## API Endpoints
+## HTTP API
 
 | Method | Path | Description |
 |--------|------|-------------|
-| WS | `/ws` | Real-time state + commands |
-| GET | `/api/state` | Current show state |
-| POST | `/api/command` | Send command |
-| GET | `/api/script` | Get current script |
-| POST | `/api/script` | Upload script |
-| GET | `/api/scripts` | List available scripts |
+| WS | `/ws` | Live `state_update` frames + JSON commands (`command`, `args`) |
+| GET | `/api/state` | Current show state snapshot |
+| POST | `/api/command` | Same commands as WebSocket (body: `command`, optional `args`) |
+| GET | `/api/script` | Current script JSON |
+| POST | `/api/script` | Upload script body; writes `scripts/uploaded_show.json` |
+| GET | `/api/scripts` | List `scripts/*.json` |
 
 ## Development
 
-### Frontend dev server (with hot reload)
+### Frontend with hot reload (Vite)
 
 ```bash
 cd web
 npm run dev
-# Opens on http://localhost:5173 with proxy to Python backend
+```
+
+Dev server defaults to **http://localhost:5173**. `vite.config.js` proxies `/ws` and `/api` to **http://127.0.0.1:8000**, so run the Python app in another terminal:
+
+```bash
+python main.py --debug
 ```
 
 ### Backend only
@@ -212,3 +248,5 @@ npm run dev
 ```bash
 python main.py --debug
 ```
+
+Without a `web/dist` build, the root URL may show an API-only message; build the frontend or use `npm run dev` for the UI.
