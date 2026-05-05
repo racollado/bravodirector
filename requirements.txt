@@ -1,0 +1,39 @@
+# BravoDirectorFinal - Performance Orchestration System
+# Core
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+websockets>=13.0
+python-dotenv>=1.0.0
+
+# Speech Recognition
+assemblyai[extras]>=0.37.0
+
+# AI - Text Generation
+google-genai>=1.0.0
+
+# AI - Media Generation (music, TTS, video)
+replicate>=1.0.0
+
+# Fuzzy String Matching
+rapidfuzz>=3.9.0
+
+# OSC (TouchDesigner communication)
+python-osc>=1.9.0
+
+# Audio Playback
+pygame>=2.6.0
+pydub>=0.25.0
+numpy>=1.22.0
+scipy>=1.9.0
+soundfile>=0.12.0
+
+# AWS (DynamoDB audience submissions)
+boto3>=1.35.0
+
+# HTTP
+aiohttp>=3.10.0
+requests>=2.32.0
+certifi>=2024.0.0
+
+# Utilities
+pydantic>=2.9.0

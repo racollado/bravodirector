@@ -1,0 +1,17 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+node_modules/
+web/dist/
+assets/audio/generated_*
+assets/video/generated_*
+.DS_Store
+*.egg-info/
+dist/
+build/
+.cursorrules
+.cursor/
+assets/*
