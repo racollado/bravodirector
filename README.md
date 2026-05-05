@@ -1,5 +1,17 @@
 # Bravo, Director
 
+## IMPORTANT HUMAN DISCLAIMER:
+
+A lot of this code is AI-generated. And by a lot, I mean pretty much all of it. Am I proud of this fact? Not particularly. However, does it work? For the most part, I think.
+
+I like to consider this repository a supplementary digital artifact of the show that further showcases the bittersweet irony of instant AI gratification. Not all of this code makes sense for its intended goal. In fact, I found myself finding ways to work around the janky AI output in producing this show.
+
+However, the fact of the matter is, this show wouldn't have existed by its performance date had it not been for Claude. And there's something deeply wrong about that fact. Thanks, Claude... I guess?
+
+The rest of this README is also AI-generated. I highly doubt anyone really cares to deeply understand this project's architecture, let alone clone and run the code, but if you do, I'm sorry if none of it makes sense. I didn't write it! Enjoy.
+
+-------------------------------
+
 **Bravo, Director v2.0** — a real-time, AI-assisted performance orchestration system for experimental theater. A single Python process runs the show engine (FastAPI + uvicorn) and serves the built React app for the performer view and script editor. Audience-facing visuals (captions, video, QR codes, timer) are rendered by a companion TouchDesigner project that listens for OSC messages.
 
 ## Requirements
