@@ -6,7 +6,7 @@ A lot of this code is AI-generated. And by a lot, I mean pretty much all of it. 
 
 I like to consider this repository a supplementary digital artifact of the show that further showcases the bittersweet irony of instant AI gratification. Not all of this code makes sense for its intended goal. In fact, I found myself finding ways to work around the janky AI output in producing this show.
 
-However, the fact of the matter is, this show wouldn't have existed by its performance date had it not been for Claude. And, to me, there's something deeply horrifying about that fact. Thanks, Claude... I guess?
+However, the fact of the matter is, this show - which ultimately made people pretty happy - wouldn't have existed by its performance date had it not been for Claude. And, to me, there's something deeply horrifying about that fact. Thanks, Claude... I guess?
 
 The rest of this README is also AI-generated. I highly doubt anyone really cares to deeply understand this project's architecture, let alone clone and run the code, but if you do, some of it is definitely wrong and I'm sorry. But actually I'm not sorry because I didn't write it! Enjoy.
 
