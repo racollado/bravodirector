@@ -1,0 +1,798 @@
+{
+  "title": "Bravo, Director",
+  "version": "2.0",
+  "settings": {
+    "osc": {
+      "host": "127.0.0.1",
+      "port": 9000
+    },
+    "speech": {
+      "provider": "assemblyai",
+      "default_confidence": 0.85,
+      "default_cue_words": 4
+    },
+    "models": {
+      "text": "gemini-2.5-flash",
+      "music": "stability-ai/stable-audio-2.5",
+      "tts": "minimax/speech-2.8-turbo",
+      "video": "google/veo-2"
+    },
+    "audio_layers": [
+      "main",
+      "music",
+      "sfx"
+    ],
+    "performer": {
+      "shortcuts": {
+        "pause": "P",
+        "skip_with_failure": "Q",
+        "skip_clean": "W",
+        "go_back": "E",
+        "start_show": "S"
+      },
+      "pause_caption": "[OFFSCRIPT]"
+    },
+    "failure": {
+      "sfx": "./assets/audio/quack.mp3",
+      "display_to_audience": true,
+      "osc_address": "/failure/increment"
+    },
+    "generation": {
+      "loading_sfx": "./assets/audio/microwavestart.wav",
+      "complete_sfx": "./assets/audio/microwaveend.wav"
+    }
+  },
+  "segments": [
+    {
+      "id": "opening",
+      "name": "1) Opening",
+      "steps": [
+        {
+          "id": "step_1778089808427",
+          "trigger": {
+            "type": "auto",
+            "phrase": "",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/video/natlightning.mp4"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "intro_media",
+          "trigger": {
+            "type": "timer",
+            "duration": 6
+          },
+          "caption": {
+            "text": "Bravo, Director\nA lightning talk & demo\nby Rafael Collado",
+            "display": true,
+            "color": "#b8faff"
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/black.png"
+            }
+          ],
+          "performer": {
+            "note": "Intro plays automatically"
+          }
+        },
+        {
+          "id": "step_1778088207831",
+          "trigger": {
+            "type": "speech",
+            "phrase": "hi everyone",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "Hi everyone!",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1778089036731",
+          "trigger": {
+            "type": "speech",
+            "phrase": "for that video",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "First of all, I paid $2.40 for that video.",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/43poster3.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1778089088402",
+          "trigger": {
+            "type": "speech",
+            "phrase": "bravo director",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "Second of all, this is a short presentation of me demoing some of the wacky things AI does in my master's project and one-man show, \"Bravo, Director\".",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/black.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "generate_monologue",
+          "trigger": {
+            "type": "speech",
+            "phrase": "actually isn't",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "For instance, how about a fun fact that sounds real but actually isn't?"
+          },
+          "actions": [
+            {
+              "type": "generate_text",
+              "task_id": "funfact",
+              "prompt": "Come up with a fun fact that sounds real, but actually has no grounding in observed truth. Output just the raw text, no preamble, labels, or formatting.",
+              "blocking": true,
+              "inject": {
+                "mode": "per_sentence",
+                "caption_color": "#ff0000",
+                "trigger_mode": "speech"
+              }
+            },
+            {
+              "type": "play_video",
+              "blocking": false,
+              "file": "./assets/images/textinred.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "AI monologue generating. Read lines as they appear in RED."
+          }
+        },
+        {
+          "id": "step_1775465164368",
+          "trigger": {
+            "type": "auto",
+            "phrase": "",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "file": "./assets/images/black.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        }
+      ]
+    },
+    {
+      "id": "ai_is_awesome",
+      "name": "2) AI is Awesome",
+      "steps": [
+        {
+          "id": "human_line_1",
+          "trigger": {
+            "type": "speech",
+            "wait_for_voice": true,
+            "delay": 0,
+            "phrase": "thanks gemini"
+          },
+          "caption": {
+            "text": "Thanks, Gemini!",
+            "color": "#ffffff",
+            "mode": "clear_then_voice",
+            "clear_delay": 0,
+            "display": true
+          },
+          "actions": [],
+          "performer": {
+            "section_label": "TRANSITION"
+          }
+        },
+        {
+          "id": "step_1778090220007",
+          "trigger": {
+            "type": "speech",
+            "phrase": "check this out",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "But we're just getting things started- check this out!",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/qrcode.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        }
+      ]
+    },
+    {
+      "id": "freestyle",
+      "name": "3) Freestyle Rap",
+      "steps": [
+        {
+          "id": "show_qr_and_timer",
+          "trigger": {
+            "type": "speech",
+            "phrase": "inspiration for a freestyle rap",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "Take out your phones, scan this QR code, and give me some inspiration for a freestyle rap.",
+            "color": "#ffcc00",
+            "mode": "advance_on_cue",
+            "display": true
+          },
+          "actions": [],
+          "performer": {
+            "note": "",
+            "section_label": "FREESTYLE RAP SETUP"
+          }
+        },
+        {
+          "id": "step_1775567910762",
+          "trigger": {
+            "type": "speech",
+            "phrase": "quickly",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "But quickly! ",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1778090367737",
+          "trigger": {
+            "type": "speech",
+            "phrase": "lightning talk!",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "Because it's a lightning talk!",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_audio",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/audio/lightning.mp3"
+            },
+            {
+              "type": "start_timer",
+              "blocking": true,
+              "volume": 1,
+              "duration": 12
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "freestyle_fetch_audience",
+          "trigger": {
+            "type": "auto",
+            "phrase": "",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": false,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "file": "./assets/images/black.png"
+            },
+            {
+              "type": "fetch_submissions",
+              "blocking": true,
+              "table": "tbapse",
+              "task_id": "audience_words"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "Loads audience words from DynamoDB for the next line.",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "freestyle_read_audience_words",
+          "trigger": {
+            "type": "speech",
+            "phrase": "bring in the beat",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "Today's suggestions: ",
+            "text_append_task": "audience_words",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [],
+          "overlays": [],
+          "performer": {
+            "note": "Read the suggestions aloud, then say the cue to start the beat.",
+            "section_label": "FREESTYLE \u2014 AUDIENCE WORDS"
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1775567954637",
+          "trigger": {
+            "type": "auto",
+            "phrase": "",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "generate_music",
+              "blocking": true,
+              "task_id": "rap_beat",
+              "model": "stability-ai/stable-audio-2.5",
+              "prompt": "83 bpm, boom-bap MF Doom type rap beat, hip hop, groovy, bouncy, grimy, hardcore, chopped and screwed, piano, lots of bass, heavy kick, laid back, chill, ONLY INSTRUMENTAL, NO VOCALS.",
+              "prompt_source": "$audience_words",
+              "fallback": "./assets/audio/fallbackrap.wav",
+              "duration": 190
+            },
+            {
+              "type": "generate_image",
+              "blocking": true,
+              "prompt_append_task": "audience_words",
+              "aspect_ratio": "16:9",
+              "output_file": "./assets/images/wordcloud.png",
+              "task_id": "wordcloud",
+              "model": "google/imagen-4",
+              "prompt": "Please create a graphic word cloud using all the words in the following list:"
+            },
+            {
+              "type": "generate_text",
+              "blocking": true,
+              "task_id": "rap_lyrics",
+              "prompt_append_task": "audience_words",
+              "prompt": "Create original rap lyrics that incorporate and reference the following compiled words, phrases, and ideas. Each verse should consist of four couplets, with the number of verses being determined by the number of words, phrases, and ideas in the compiled lyrics. DO NOT write a chorus, bridge, intro, or outro \u2014 just write verses. Make sure each line is not too long or short so that it is easy to fit to a mid-tempo beat. The song should creatively weave in themes, phrases, or ideas from these lyrics while being a cohesive, original composition. The tone is boastful and braggadocious rap that is self-referential to the fact that the rapper is the best because he is able to reference these varied ideas in a way that is clever and funny. Output ONLY the raw lyric lines, one per line. No verse labels, no section headers, no brackets, no annotations \u2014 just the lyrics.\n",
+              "inject": {
+                "mode": "per_line",
+                "caption_color": "#ff4444",
+                "trigger_mode": "speech"
+              }
+            },
+            {
+              "type": "play_audio",
+              "blocking": false,
+              "source": "$rap_beat",
+              "layer": "music"
+            },
+            {
+              "type": "play_video",
+              "blocking": false,
+              "file": "./assets/images/wordcloud.png",
+              "volume": 0
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        }
+      ]
+    },
+    {
+      "id": "post_rap",
+      "name": "4) Post Rap",
+      "steps": [
+        {
+          "id": "end_rap",
+          "trigger": {
+            "type": "auto"
+          },
+          "caption": null,
+          "actions": [
+            {
+              "type": "audio_control",
+              "layer": "music",
+              "command": "fade_out",
+              "duration": 3,
+              "value": 0
+            },
+            {
+              "type": "play_audio",
+              "blocking": false,
+              "file": "./assets/audio/airhorn.mp3",
+              "layer": "sfx"
+            },
+            {
+              "type": "play_video",
+              "blocking": false,
+              "file": "./assets/images/black.png"
+            }
+          ],
+          "performer": {
+            "note": "",
+            "section_label": "POST-RAP TRANSITION"
+          }
+        },
+        {
+          "id": "post_rap_line_1",
+          "trigger": {
+            "type": "speech",
+            "wait_for_voice": true,
+            "phrase": "geometry xavier"
+          },
+          "caption": {
+            "text": "Try to analyze that flow with geometry, XAVIER!",
+            "color": "#ffffff",
+            "mode": "clear_then_voice",
+            "clear_delay": 1.5,
+            "display": true
+          },
+          "actions": []
+        },
+        {
+          "id": "step_1775635089560",
+          "trigger": {
+            "type": "speech",
+            "phrase": "history class",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "AI can even make sophisticated songs that sound like something we would have to learn about in Music Tech History class!",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "tts_section",
+          "trigger": {
+            "type": "auto",
+            "phrase": "spoke for me too",
+            "confidence": 0.85
+          },
+          "caption": null,
+          "actions": [
+            {
+              "type": "generate_image",
+              "blocking": true,
+              "task_id": "avantgarde",
+              "model": "google/imagen-4",
+              "prompt": "Show me the artwork for a piece of music that is an avant-garde post-modern composition for solo vocalist.",
+              "output_file": "./assets/images/avantgarde.png"
+            },
+            {
+              "type": "play_video",
+              "blocking": false,
+              "file": "./assets/images/avantgarde.png"
+            },
+            {
+              "type": "generate_text",
+              "task_id": "tts_script",
+              "prompt": "Write a modern avant-garde musical piece for solo voice using only plain text output that describes the performance instructions. It should be inspired by very sophisticated composers like Pauline Oliveros, John Cage, Nancarrow, Alvin Lucier, Bach, Mozart, Beethoven, Thor Magnusson, Miller Puckette, Beyonce, Dua Lipa, but without mentioning any of them explicitly by name. The piece should be extremely complex, yet simple and elegant. It should be able to impress a PhD in Music and any other pretentious music nerds. However, as a limitation, the outputted plain text should only be around 50 words. The piece must be perfect and masterful. NO markdown or list formatting. Just plain english sentences.",
+              "blocking": true
+            },
+            {
+              "type": "generate_tts",
+              "task_id": "tts_audio",
+              "model": "minimax/speech-2.8-turbo",
+              "text_source": "$tts_script",
+              "voice": "narrator",
+              "blocking": true,
+              "inject": {
+                "mode": "tts_driven",
+                "caption_color": "#88ccff"
+              }
+            }
+          ],
+          "performer": {
+            "note": "AI voice takes over. Captions driven by TTS timestamps. Stand still.",
+            "section_label": "AI VOICE NUMBER"
+          }
+        }
+      ]
+    },
+    {
+      "id": "believe_me",
+      "name": "5) You'll Believe Me",
+      "steps": [
+        {
+          "id": "fixed_timing_intro",
+          "trigger": {
+            "type": "speech",
+            "wait_for_voice": true,
+            "phrase": "cool"
+          },
+          "caption": {
+            "text": "Wow, cool!",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/black.png"
+            }
+          ],
+          "performer": {
+            "section_label": "FIXED TIMING NUMBER"
+          }
+        },
+        {
+          "id": "step_1776498452785",
+          "trigger": {
+            "type": "speech",
+            "phrase": "what you're thinking",
+            "confidence": 0.85,
+            "wait_for_voice": true
+          },
+          "caption": {
+            "text": "I bet what you're thinking:",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/flowtb.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1778094323874",
+          "trigger": {
+            "type": "speech",
+            "phrase": "show even work",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "How does this show even work?",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/claude.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1778094337336",
+          "trigger": {
+            "type": "speech",
+            "phrase": "the whole world",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "Will Claude take over the whole world?",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/grad.jpg"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1778094369108",
+          "trigger": {
+            "type": "speech",
+            "phrase": "graduate already",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "And can we please graduate already?",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [
+            {
+              "type": "play_video",
+              "blocking": false,
+              "volume": 1,
+              "file": "./assets/images/43poster3.png"
+            }
+          ],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        },
+        {
+          "id": "step_1778094427958",
+          "trigger": {
+            "type": "speech",
+            "phrase": "",
+            "confidence": 0.85
+          },
+          "caption": {
+            "text": "All these questions and more will be answered by the obnoxiously large yellow poster hanging to the right of Couch 209.",
+            "color": "#ffffff",
+            "mode": "advance_on_cue",
+            "display": true,
+            "clear_delay": 0
+          },
+          "actions": [],
+          "overlays": [],
+          "performer": {
+            "note": "",
+            "section_label": ""
+          },
+          "mode": null
+        }
+      ]
+    }
+  ]
+}
